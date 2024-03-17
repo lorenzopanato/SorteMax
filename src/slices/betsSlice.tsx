@@ -25,12 +25,13 @@ export const betsSlice = createSlice({
       } else {
         // se os dados estiverem corretos, adiciona a aposta à lista
         state.push(action.payload);
-        enqueueSnackbar("Aposta registrada com sucesso!", {
+        enqueueSnackbar(`Aposta de número ${action.payload.id} registrada com sucesso!`, {
           variant: "success",
         });
       }
     },
     removeBet: (state, action: PayloadAction<BetData>) => {
+      // encontra a aposta pelo id e remove ela da lista
       const index = state.findIndex((bet) => bet.id === action.payload.id);
       if (index !== -1) {
         state.splice(index, 1);

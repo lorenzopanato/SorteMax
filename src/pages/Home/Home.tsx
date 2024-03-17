@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <main className="text-darkText">
-      <section className="flex gap-4 lg:gap-0 lg:flex-row flex-col-reverse max-w-screen-xl lg:pl-6 items-center mt-10 lg:mt-24 xl:mt-36">
+      <section className="flex gap-4 lg:gap-0 lg:flex-row flex-col-reverse max-w-screen-xl lg:pl-2 items-center mt-10 lg:mt-24 xl:mt-36">
         <article className="w-5/6 ">
           <h1 className="font-semibold text-3xl sm:text-4xl">
             Bem-vindo ao{" "}

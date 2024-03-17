@@ -3,7 +3,7 @@ import { MdDomainVerification } from "react-icons/md";
 
 export default function ProgressBar() {
   return (
-    <section className="text-gray-400 font-medium flex w-full gap-2">
+    <section className="text-gray-400 text-sm sm:text-base font-medium flex w-full gap-2">
       <div className="flex flex-col flex-1 items-center text-primary">
         <FaDice size={36} />
         <p className="cursor-default mt-1">Apostas</p>

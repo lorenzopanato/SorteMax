@@ -11,6 +11,8 @@ import { RootState } from "../../store/store";
 import { BetData } from "../../utils/interfaces";
 import { enqueueSnackbar } from "notistack";
 import { FaDice, FaTrashAlt } from "react-icons/fa";
+import { MdNavigateNext } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 interface UserData {
   name: string;
@@ -38,6 +40,7 @@ export default function Bets() {
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
   const bets = useSelector((state: RootState) => state.bets);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -81,11 +84,22 @@ export default function Bets() {
 
   const handleRemoveFromList = (data: BetData) => {
     dispatch(removeBet(data));
-  }
+  };
+
+  const handleNextStep = () => {
+    if (bets.length >= 2) {
+      navigate("/raffle");
+    } else {
+      enqueueSnackbar(
+        "Registre pelo menos duas apostas para avançar para a próxima etapa",
+        { variant: "info" }
+      );
+    }
+  };
 
   return (
     <main>
-      <section className="mt-12 w-full max-w-screen-lg px-6">
+      <section className="mt-12 w-full max-w-screen-lg">
         <ProgressBar />
         <p className="mt-16">
           Informe o nome e o CPF do apostador e os números por ele escolhidos,
@@ -132,7 +146,7 @@ export default function Bets() {
               Registrar aposta
             </button>
           </div>
-          <div className="flex-1 flex gap-2 flex-wrap">
+          <div className="flex-1 flex gap-2 flex-wrap justify-center">
             {numbers.map((n) => (
               <span
                 onClick={() => handleSelect(n)}
@@ -147,19 +161,26 @@ export default function Bets() {
           </div>
         </form>
         <hr />
-        <h1 className="text-3xl mt-12 font-semibold text-darkText">
-          Apostas registradas
-        </h1>
+        <div className="flex flex-col gap-4 sm:flex-row justify-between items-center mt-12">
+          <h1 className="text-3xl text-center font-semibold text-darkText">
+            Apostas registradas
+          </h1>
+          <button
+            onClick={handleNextStep}
+            className="bg-primary text-lightText flex items-center justify-center gap-1 font-medium py-2.5 w-48 rounded-3xl transition-opacity hover:opacity-90"
+          >
+            Próxima etapa
+            <MdNavigateNext size={24} />
+          </button>
+        </div>
         <section className="flex flex-col gap-6 mt-6 mb-14">
           {bets.length === 0 ? (
-            <p className="text-lg mt-4">
-              Nenhuma aposta registrada até o momento.
-            </p>
+            <p className="text-lg">Nenhuma aposta registrada até o momento.</p>
           ) : (
             bets.map((bet: BetData) => (
               <div
                 key={bet.id}
-                className="flex items-center p-3 border-b border-gray-300 hover:bg-gray-50"
+                className="flex items-center justify-between p-3 border-b border-gray-300 hover:bg-gray-50"
               >
                 <div className="flex gap-5">
                   <div className="bg-secondary rounded-full w-14 h-14 flex items-center justify-center">
@@ -174,16 +195,15 @@ export default function Bets() {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-6 sm:gap-20 md:gap-60 lg:gap-80 flex-1 justify-end">
-                  <p className="text-secondary font-medium text-lg flex">
-                    {bet.numbers.join(" ")}
-                  </p>
-                  <FaTrashAlt
-                    size={24}
-                    className="text-gray-500 cursor-pointer"
-                    onClick={() => handleRemoveFromList(bet)}
-                  />
-                </div>
+
+                <p className="text-secondary font-medium text-lg flex">
+                  {bet.numbers.join(" ")}
+                </p>
+                <FaTrashAlt
+                  size={24}
+                  className="text-gray-500 cursor-pointer"
+                  onClick={() => handleRemoveFromList(bet)}
+                />
               </div>
             ))
           )}
