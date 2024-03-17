@@ -13,6 +13,7 @@ import { enqueueSnackbar } from "notistack";
 import { FaDice, FaTrashAlt } from "react-icons/fa";
 import { MdNavigateNext } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 
 interface UserData {
   name: string;
@@ -66,7 +67,7 @@ export default function Bets() {
     const bet: BetData = {
       // começa a contagem de id a partir de 1000
       id: bets.length === 0 ? 1000 : bets[bets.length - 1].id + 1,
-      name: data.name,
+      name: data.name.trim(),
       cpf: data.cpf,
       numbers: selectedNumbers,
     };
@@ -80,6 +81,21 @@ export default function Bets() {
         variant: "error",
       });
     }
+  };
+
+  // escolhe aleatoriamente os numeros (aposta surpresinha)
+  const handleRandomBet = () => {
+    const randomNumbers: number[] = [];
+    const availableNumbers = [...numbers]; 
+  
+    for (let i = 0; i < 5; i++) {
+      const randomIndex = Math.floor(Math.random() * availableNumbers.length);
+      const selectedNumber = availableNumbers[randomIndex];
+      randomNumbers.push(selectedNumber);
+      availableNumbers.splice(randomIndex, 1); 
+    }
+  
+    setSelectedNumbers(randomNumbers);
   };
 
   const handleRemoveFromList = (data: BetData) => {
@@ -102,13 +118,21 @@ export default function Bets() {
       <section className="mt-12 w-full max-w-screen-lg">
         <ProgressBar />
         <p className="mt-16">
-          Informe o nome e o CPF do apostador e os números por ele escolhidos,
-          lembrando que, para cada apostador, pode-se registrar quantas apostas
-          quiser.
+          Informe o nome e o CPF do apostador e os 5 números escolhidos por ele
+          ou pelo sistema. Lembrando que, para cada apostador, pode-se registrar
+          quantas apostas quiser.
         </p>
+        <div className="flex justify-end mt-5 mb-4 pr-3">
+          <GiPerspectiveDiceSixFacesRandom
+            size={36}
+            className="text-gray-400 cursor-pointer transition-colors hover:text-primary"
+            title="Sortear aleatoriamente (aposta surpresinha)"
+            onClick={handleRandomBet}
+          />
+        </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col lg:flex-row gap-8 mt-10 pb-10"
+          className="flex flex-col lg:flex-row gap-8 pb-10"
         >
           <div className="flex flex-col flex-1 gap-4">
             <div>
