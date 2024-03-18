@@ -1,4 +1,11 @@
-import { TextField } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  TextField,
+} from "@mui/material";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import { FaPlus } from "react-icons/fa6";
 import { useState } from "react";
@@ -14,6 +21,7 @@ import { FaDice, FaTrashAlt } from "react-icons/fa";
 import { MdNavigateNext } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import numbers from "../../data/numbers.json";
 
 interface UserData {
   name: string;
@@ -31,17 +39,12 @@ const schema = yup.object().shape({
     ),
 });
 
-const numbers = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
-  42, 43, 44, 45, 46, 47, 48, 49, 50,
-];
-
 export default function Bets() {
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
   const bets = useSelector((state: RootState) => state.bets);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   const {
     register,
@@ -50,6 +53,14 @@ export default function Bets() {
   } = useForm<UserData>({
     resolver: yupResolver(schema),
   });
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleSelect = (n: number) => {
     if (selectedNumbers.includes(n)) {
@@ -69,13 +80,12 @@ export default function Bets() {
       id: bets.length === 0 ? 1000 : bets[bets.length - 1].id + 1,
       name: data.name.trim(),
       cpf: data.cpf,
-      numbers: selectedNumbers,
+      numbers: selectedNumbers.sort((a, b) => a - b),
     };
 
     if (bet.numbers.length === 5) {
       dispatch(addBet(bet));
       setSelectedNumbers([]);
-      console.log(bets);
     } else {
       enqueueSnackbar("Cada aposta deve conter exatamente 5 números.", {
         variant: "error",
@@ -86,15 +96,15 @@ export default function Bets() {
   // escolhe aleatoriamente os numeros (aposta surpresinha)
   const handleRandomBet = () => {
     const randomNumbers: number[] = [];
-    const availableNumbers = [...numbers]; 
-  
+    const availableNumbers = [...numbers];
+
     for (let i = 0; i < 5; i++) {
       const randomIndex = Math.floor(Math.random() * availableNumbers.length);
       const selectedNumber = availableNumbers[randomIndex];
       randomNumbers.push(selectedNumber);
-      availableNumbers.splice(randomIndex, 1); 
+      availableNumbers.splice(randomIndex, 1);
     }
-  
+
     setSelectedNumbers(randomNumbers);
   };
 
@@ -190,7 +200,7 @@ export default function Bets() {
             Apostas registradas
           </h1>
           <button
-            onClick={handleNextStep}
+            onClick={handleClickOpen}
             className="bg-primary text-lightText flex items-center justify-center gap-1 font-medium py-2.5 w-48 rounded-3xl transition-opacity hover:opacity-90"
           >
             Próxima etapa
@@ -221,7 +231,7 @@ export default function Bets() {
                 </div>
 
                 <p className="text-secondary font-medium text-lg flex">
-                  {bet.numbers.join(" ")}
+                  {bet.numbers.join(" - ")}
                 </p>
                 <FaTrashAlt
                   size={24}
@@ -232,6 +242,52 @@ export default function Bets() {
             ))
           )}
         </section>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText
+              id="alert-dialog-description"
+              sx={{
+                fontSize: "1.1rem",
+                fontFamily: "Inter, sans-serif",
+                color: "var(--dark-text)",
+              }}
+            >
+              Tem certeza de que deseja ir para a etapa de sorteio? Uma vez nela,
+              você não poderá mais voltar para a etapa de apostas.{" "}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleClose}
+              sx={{
+                color: "var(--gray-text)",
+                fontFamily: "Inter, sans-serif",
+                textTransform: "none",
+                fontSize: "1rem",
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => handleNextStep()}
+              sx={{
+                fontWeight: "500",
+                fontFamily: "Inter, sans-serif",
+                textTransform: "none",
+                fontSize: "1rem",
+                color: "#28a171"
+              }}
+              autoFocus
+            >
+              Próxima etapa
+            </Button>
+          </DialogActions>
+        </Dialog>
       </section>
     </main>
   );

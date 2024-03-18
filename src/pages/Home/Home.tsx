@@ -2,18 +2,22 @@ import { useNavigate } from "react-router-dom";
 import LotteryImage from "../../assets/lottery.jpg";
 import { CiLogin } from "react-icons/ci";
 import { enqueueSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { clearBets } from "../../slices/betsSlice";
 
 export default function Home() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleStartEdition = () => {
+    dispatch(clearBets());
     navigate("/bets");
-    enqueueSnackbar("Edição iniciada com sucesso!", {variant: "success"})
-  }
+    enqueueSnackbar("Edição iniciada com sucesso!", { variant: "success" });
+  };
 
   return (
     <main className="text-darkText">
-      <section className="flex gap-4 lg:gap-0 lg:flex-row flex-col-reverse max-w-screen-xl lg:pl-2 items-center mt-10 lg:mt-24 xl:mt-36">
+      <section className="flex gap-4 lg:gap-0 lg:flex-row flex-col-reverse max-w-screen-xl lg:pl-2 items-center">
         <article className="w-5/6 ">
           <h1 className="font-semibold text-3xl sm:text-4xl">
             Bem-vindo ao{" "}

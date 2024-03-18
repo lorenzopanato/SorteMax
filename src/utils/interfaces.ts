@@ -4,3 +4,8 @@ export interface BetData {
   cpf: string;
   numbers: number[];
 }
+
+export interface numberFrequence {
+  number: number;
+  frequency: number;
+}
