@@ -49,7 +49,8 @@ export const betsSlice = createSlice({
       }
     },
     clearBets: () => {
-      localStorage.removeItem("bets"); // Remover do localStorage
+      localStorage.removeItem("bets"); // Remove apostas do local storage
+      localStorage.removeItem("winningBets"); // Remove apostas vencedoras do local storage
       return [];
     },
   },

@@ -24,6 +24,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay } from "swiper/modules";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Raffle() {
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
@@ -34,6 +35,7 @@ export default function Raffle() {
   );
   const [swiper, setSwiper] = useState<any>(null);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -57,7 +59,7 @@ export default function Raffle() {
     let availableNumbers = [...numbers];
     let rounds = 0;
     let currentNumbers: number[] = [];
-    let winningBets: BetData[] = [];
+    let localWinningBets: BetData[] = [];
 
     while (rounds < 25) {
       // Sortear 5 números aleatórios
@@ -76,12 +78,12 @@ export default function Raffle() {
       }
 
       // Verificar apostas vencedoras
-      winningBets = bets.filter((bet: BetData) => {
+      localWinningBets = bets.filter((bet: BetData) => {
         return bet.numbers.every((number) => currentNumbers.includes(number));
       });
 
-      if (winningBets.length > 0) {
-        winningBets.sort((a, b) => {
+      if (localWinningBets.length > 0) {
+        localWinningBets.sort((a, b) => {
           if (a.name < b.name) {
             return -1;
           }
@@ -91,14 +93,15 @@ export default function Raffle() {
           return 0;
         });
 
-        setWinningBets(winningBets);
+        setWinningBets(localWinningBets);
+        localStorage.setItem("winningBets", JSON.stringify(localWinningBets));
         break;
       } else {
         rounds++;
       }
     }
 
-    if (winningBets.length > 0) {
+    if (localWinningBets.length > 0) {
       enqueueSnackbar("Apostas vencedoras foram encontradas!", {
         variant: "success",
       });
@@ -424,7 +427,7 @@ export default function Raffle() {
               Cancelar
             </Button>
             <Button
-              //onClick={() => handleNextStep()}
+              onClick={() => navigate("/awards")}
               sx={{
                 fontWeight: "500",
                 fontFamily: "Inter, sans-serif",
