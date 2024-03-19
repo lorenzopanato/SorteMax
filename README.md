@@ -1,30 +1,42 @@
-# React + TypeScript + Vite
+<h1 align="center"> SorteMax </h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  Este projeto foi criado para o processo seletivo do Dell It Academy.
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#%EF%B8%8F-instalação-do-projeto">Instalação do Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-sobre-o-projeto">Sobre o Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tecnologias
 
-## Expanding the ESLint configuration
+Este projeto foi desenvolvido com as seguintes tecnologias:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React
+- TypeScript
+- Redux
+- Tailwind CSS
+- Vite
+- Material UI
+- Swiper JS
 
-- Configure the top-level `parserOptions` property like this:
+## ⚙️ Instalação do Projeto
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Passo a passo:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Clone o repositório principal.
+2. Execute o comando "npm install" para baixar as dependências.
+3. Execute o comando "npm run dev" para iniciar o projeto.
+
+## 💻 Sobre o Projeto
+
+Deploy do projeto: [Link para o Vercel](sorte-max.vercel.app) <br><br>
+O projeto foi desenvolvido em React e Redux com o objetivo de criar sistema de controle de apostas, similar à Mega-Sena® e outros. O sistema funciona em 4 fases: fase de apostas, fase de sorteio, fase de apuração e fase de premiação.
+
+![image](https://github.com/lorenzopanato/SorteMax/assets/132415449/32f7e333-75bf-4978-adcb-1c480a2a2b21)
+
+Na primeira fase, o usuário pode registrar apostas, informando o nome e o CPF de cada apostador, além dos 5 números por ele escolhidos. Cada aposta registrada será exibida em tela para o usuário com todos dados informados, além do identificador único sequencial daquela aposta, partindo do número 1000.
+
+
