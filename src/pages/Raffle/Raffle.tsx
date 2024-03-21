@@ -95,6 +95,7 @@ export default function Raffle() {
 
         setWinningBets(localWinningBets);
         localStorage.setItem("winningBets", JSON.stringify(localWinningBets));
+        localStorage.setItem("winningNumbers", JSON.stringify(currentNumbers));
         break;
       } else {
         rounds++;
@@ -373,6 +374,7 @@ export default function Raffle() {
                                   border: 0,
                                 },
                               }}
+                              key={n.number}
                             >
                               <TableCell
                                 align="center"
